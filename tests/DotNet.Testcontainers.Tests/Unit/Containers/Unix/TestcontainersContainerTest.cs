@@ -396,6 +396,42 @@ namespace DotNet.Testcontainers.Tests.Unit.Containers.Unix
       }
 
       [Fact]
+      public async Task ExecCommandInRunningContainerWithStdout()
+      {
+        // Given
+        var testcontainersBuilder = new TestcontainersBuilder<TestcontainersContainer>()
+          .WithImage("alpine")
+          .WithEntrypoint(KeepTestcontainersUpAndRunning.Command);
+
+        // When
+        // Then
+        await using (ITestcontainersContainer testcontainer = testcontainersBuilder.Build())
+        {
+          await testcontainer.StartAsync();
+          var output = await testcontainer.ExecWithOutputAsync(new[] { "/bin/sh", "-c", "ping -c 3 google.com" });
+          Assert.Contains("PING google.com", output.StdOut);
+        }
+      }
+
+      [Fact]
+      public async Task ExecCommandInRunningContainerWithStderr()
+      {
+        // Given
+        var testcontainersBuilder = new TestcontainersBuilder<TestcontainersContainer>()
+          .WithImage("alpine")
+          .WithEntrypoint(KeepTestcontainersUpAndRunning.Command);
+
+        // When
+        // Then
+        await using (ITestcontainersContainer testcontainer = testcontainersBuilder.Build())
+        {
+          await testcontainer.StartAsync();
+          var output = await testcontainer.ExecWithOutputAsync(new[] { "/bin/sh", "-c", "cd missing_folder" });
+          Assert.Contains("can't cd to missing_folder", output.StdErr);
+        }
+      }
+
+      [Fact]
       public async Task CopyFileToRunningContainer()
       {
         // Given

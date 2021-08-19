@@ -153,6 +153,12 @@ namespace DotNet.Testcontainers.Clients
     }
 
     /// <inheritdoc />
+    public Task<ExecResult> ExecWithOutputAsync(string id, IList<string> command, CancellationToken ct = default)
+    {
+      return this.containers.ExecWithOutputAsync(id, command, ct);
+    }
+
+    /// <inheritdoc />
     public async Task CopyFileAsync(string id, string filePath, byte[] fileContent, int accessMode, int userId, int groupId, CancellationToken ct = default)
     {
       using (var memStream = new MemoryStream())

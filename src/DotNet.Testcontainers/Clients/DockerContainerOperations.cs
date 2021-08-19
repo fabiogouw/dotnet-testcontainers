@@ -137,6 +137,38 @@ namespace DotNet.Testcontainers.Clients
       return long.MinValue;
     }
 
+    public async Task<ExecResult> ExecWithOutputAsync(string id, IList<string> command, CancellationToken ct = default)
+    {
+      this.logger.LogInformation("Executing {command} at container {id}", command, id);
+
+      var execCreateParameters = new ContainerExecCreateParameters
+      {
+        Cmd = command,
+        AttachStderr = true,
+        AttachStdout = true,
+      };
+
+      var created = await this.Docker.Exec.ExecCreateContainerAsync(id, execCreateParameters, ct)
+        .ConfigureAwait(false);
+
+      var stream = await this.Docker.Exec.StartAndAttachContainerExecAsync(created.ID, false, ct);
+
+      var results = new ExecResult();
+
+      for (ContainerExecInspectResponse response; (response = await this.Docker.Exec.InspectContainerExecAsync(created.ID, ct)
+        .ConfigureAwait(false)) != null;)
+      {
+        if (!response.Running)
+        {
+          (results.StdOut, results.StdErr) = await stream.ReadOutputToEndAsync(ct);
+          results.ExitCode = response.ExitCode;
+          break;
+        }
+      }
+
+      return results;
+    }
+
     public async Task<string> RunAsync(ITestcontainersConfiguration configuration, CancellationToken ct = default)
     {
       var converter = new TestcontainersConfigurationConverter(configuration);

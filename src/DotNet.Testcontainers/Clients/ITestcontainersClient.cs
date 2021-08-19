@@ -82,6 +82,15 @@ namespace DotNet.Testcontainers.Clients
     Task<long> ExecAsync(string id, IList<string> command, CancellationToken ct = default);
 
     /// <summary>
+    /// Executes a command in a container and returns the output generated.
+    /// </summary>
+    /// <param name="id">Docker container id.</param>
+    /// <param name="command">Shell command.</param>
+    /// <param name="ct">Cancellation token.</param>
+    /// <returns>Task that completes when the shell command has been executed.</returns>
+    Task<ExecResult> ExecWithOutputAsync(string id, IList<string> command, CancellationToken ct = default);
+
+    /// <summary>
     /// Copies a file to the container.
     /// </summary>
     /// <param name="id">Docker container id.</param>

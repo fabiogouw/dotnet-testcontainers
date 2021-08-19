@@ -110,34 +110,7 @@ namespace DotNet.Testcontainers.Clients
         .ConfigureAwait(false);
     }
 
-    public async Task<long> ExecAsync(string id, IList<string> command, CancellationToken ct = default)
-    {
-      this.logger.LogInformation("Executing {command} at container {id}", command, id);
-
-      var execCreateParameters = new ContainerExecCreateParameters
-      {
-        Cmd = command,
-      };
-
-      var created = await this.Docker.Exec.ExecCreateContainerAsync(id, execCreateParameters, ct)
-        .ConfigureAwait(false);
-
-      await this.Docker.Exec.StartContainerExecAsync(created.ID, ct)
-        .ConfigureAwait(false);
-
-      for (ContainerExecInspectResponse response; (response = await this.Docker.Exec.InspectContainerExecAsync(created.ID, ct)
-        .ConfigureAwait(false)) != null;)
-      {
-        if (!response.Running)
-        {
-          return response.ExitCode;
-        }
-      }
-
-      return long.MinValue;
-    }
-
-    public async Task<ExecResult> ExecWithOutputAsync(string id, IList<string> command, CancellationToken ct = default)
+    public async Task<ExecResult> ExecAsync(string id, IList<string> command, CancellationToken ct = default)
     {
       this.logger.LogInformation("Executing {command} at container {id}", command, id);
 

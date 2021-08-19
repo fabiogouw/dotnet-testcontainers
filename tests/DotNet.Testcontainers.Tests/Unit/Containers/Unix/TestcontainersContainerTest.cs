@@ -391,7 +391,7 @@ namespace DotNet.Testcontainers.Tests.Unit.Containers.Unix
         await using (ITestcontainersContainer testcontainer = testcontainersBuilder.Build())
         {
           await testcontainer.StartAsync();
-          Assert.Equal(255, await testcontainer.ExecAsync(new[] { "/bin/sh", "-c", "exit 255" }));
+          Assert.Equal(255, (await testcontainer.ExecAsync(new[] { "/bin/sh", "-c", "exit 255" })).ExitCode);
         }
       }
 
@@ -408,7 +408,7 @@ namespace DotNet.Testcontainers.Tests.Unit.Containers.Unix
         await using (ITestcontainersContainer testcontainer = testcontainersBuilder.Build())
         {
           await testcontainer.StartAsync();
-          var output = await testcontainer.ExecWithOutputAsync(new[] { "/bin/sh", "-c", "ping -c 3 google.com" });
+          var output = await testcontainer.ExecAsync(new[] { "/bin/sh", "-c", "ping -c 3 google.com" });
           Assert.Contains("PING google.com", output.StdOut);
         }
       }
@@ -426,7 +426,7 @@ namespace DotNet.Testcontainers.Tests.Unit.Containers.Unix
         await using (ITestcontainersContainer testcontainer = testcontainersBuilder.Build())
         {
           await testcontainer.StartAsync();
-          var output = await testcontainer.ExecWithOutputAsync(new[] { "/bin/sh", "-c", "cd missing_folder" });
+          var output = await testcontainer.ExecAsync(new[] { "/bin/sh", "-c", "cd missing_folder" });
           Assert.Contains("can't cd to missing_folder", output.StdErr);
         }
       }
@@ -449,8 +449,8 @@ namespace DotNet.Testcontainers.Tests.Unit.Containers.Unix
         {
           await testcontainer.StartAsync();
           await testcontainer.CopyFileAsync(dayOfWeekFilePath, Encoding.UTF8.GetBytes(dayOfWeek));
-          Assert.Equal(0, await testcontainer.ExecAsync(new[] { "/bin/sh", "-c", $"test \"$(cat {dayOfWeekFilePath})\" = \"{dayOfWeek}\"" }));
-          Assert.Equal(0, await testcontainer.ExecAsync(new[] { "/bin/sh", "-c", $"stat {dayOfWeekFilePath} | grep 0600" }));
+          Assert.Equal(0, (await testcontainer.ExecAsync(new[] { "/bin/sh", "-c", $"test \"$(cat {dayOfWeekFilePath})\" = \"{dayOfWeek}\"" })).ExitCode);
+          Assert.Equal(0, (await testcontainer.ExecAsync(new[] { "/bin/sh", "-c", $"stat {dayOfWeekFilePath} | grep 0600" })).ExitCode);
         }
       }
     }

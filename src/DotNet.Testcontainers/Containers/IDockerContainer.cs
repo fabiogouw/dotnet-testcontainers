@@ -131,14 +131,6 @@ namespace DotNet.Testcontainers.Containers
     /// <param name="command">Shell command.</param>
     /// <param name="ct">Cancellation token.</param>
     /// <returns>Task that completes when the shell command has been executed.</returns>
-    Task<long> ExecAsync(IList<string> command, CancellationToken ct = default);
-
-    /// <summary>
-    /// Executes a command in the running Testcontainer and returns the output generated.
-    /// </summary>
-    /// <param name="command">Shell command.</param>
-    /// <param name="ct">Cancellation token.</param>
-    /// <returns>Task that completes when the shell command has been executed, with output.</returns>
-    Task<ExecResult> ExecWithOutputAsync(IList<string> command, CancellationToken ct = default);
+    Task<ExecResult> ExecAsync(IList<string> command, CancellationToken ct = default);
   }
 }

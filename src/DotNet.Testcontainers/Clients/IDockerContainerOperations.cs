@@ -21,9 +21,7 @@ namespace DotNet.Testcontainers.Clients
 
     Task AttachAsync(string id, IOutputConsumer outputConsumer, CancellationToken ct = default);
 
-    Task<long> ExecAsync(string id, IList<string> command, CancellationToken ct = default);
-
-    Task<ExecResult> ExecWithOutputAsync(string id, IList<string> command, CancellationToken ct = default);
+    Task<ExecResult> ExecAsync(string id, IList<string> command, CancellationToken ct = default);
 
     Task<string> RunAsync(ITestcontainersConfiguration configuration, CancellationToken ct = default);
   }

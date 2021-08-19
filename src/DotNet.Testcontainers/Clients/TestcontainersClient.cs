@@ -10,6 +10,7 @@ namespace DotNet.Testcontainers.Clients
   using Docker.DotNet;
   using Docker.DotNet.Models;
   using DotNet.Testcontainers.Configurations;
+  using DotNet.Testcontainers.Containers;
   using ICSharpCode.SharpZipLib.Tar;
   using Microsoft.Extensions.Logging;
 
@@ -147,15 +148,9 @@ namespace DotNet.Testcontainers.Clients
     }
 
     /// <inheritdoc />
-    public Task<long> ExecAsync(string id, IList<string> command, CancellationToken ct = default)
+    public Task<ExecResult> ExecAsync(string id, IList<string> command, CancellationToken ct = default)
     {
       return this.containers.ExecAsync(id, command, ct);
-    }
-
-    /// <inheritdoc />
-    public Task<ExecResult> ExecWithOutputAsync(string id, IList<string> command, CancellationToken ct = default)
-    {
-      return this.containers.ExecWithOutputAsync(id, command, ct);
     }
 
     /// <inheritdoc />

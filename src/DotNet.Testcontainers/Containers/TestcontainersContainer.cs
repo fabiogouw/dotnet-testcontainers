@@ -182,15 +182,9 @@ namespace DotNet.Testcontainers.Containers
     }
 
     /// <inheritdoc />
-    public Task<long> ExecAsync(IList<string> command, CancellationToken ct = default)
+    public Task<ExecResult> ExecAsync(IList<string> command, CancellationToken ct = default)
     {
       return this.client.ExecAsync(this.Id, command, ct);
-    }
-
-    /// <inheritdoc />
-    public Task<ExecResult> ExecWithOutputAsync(IList<string> command, CancellationToken ct = default)
-    {
-      return this.client.ExecWithOutputAsync(this.Id, command, ct);
     }
 
     /// <summary>

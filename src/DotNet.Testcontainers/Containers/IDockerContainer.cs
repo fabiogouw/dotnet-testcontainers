@@ -4,7 +4,6 @@ namespace DotNet.Testcontainers.Containers
   using System.Collections.Generic;
   using System.Threading;
   using System.Threading.Tasks;
-  using DotNet.Testcontainers.Clients;
   using JetBrains.Annotations;
 
   /// <summary>

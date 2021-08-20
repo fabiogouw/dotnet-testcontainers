@@ -1,18 +1,47 @@
 namespace DotNet.Testcontainers.Containers
 {
-  public class ExecResult
+  using JetBrains.Annotations;
+
+  /// <summary>
+  /// A command exec result.
+  /// </summary>
+  public readonly struct ExecResult
   {
-    public ExecResult(string stdOut, string stdErr, long exitCode)
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ExecResult" /> struct.
+    /// </summary>
+    /// <param name="stdout">The stdout output.</param>
+    /// <param name="stderr">The stderr output.</param>
+    /// <param name="exitCode">The exit code.</param>
+    public ExecResult(string stdout, string stderr, long exitCode)
     {
-      this.StdOut = stdOut;
-      this.StdErr = stdErr;
+      this.Stdout = stdout;
+      this.Stderr = stderr;
       this.ExitCode = exitCode;
     }
 
-    public string StdOut { get; }
+    /// <summary>
+    /// Gets the failure exec result.
+    /// </summary>
+    public static ExecResult Failure { get; }
+      = new ExecResult(string.Empty, string.Empty, long.MinValue);
 
-    public string StdErr { get; }
+    /// <summary>
+    /// Gets the stdout output.
+    /// </summary>
+    [PublicAPI]
+    public string Stdout { get; }
 
+    /// <summary>
+    /// Gets the stderr output.
+    /// </summary>
+    [PublicAPI]
+    public string Stderr { get; }
+
+    /// <summary>
+    /// Gets the exit code.
+    /// </summary>
+    [PublicAPI]
     public long ExitCode { get; }
   }
 }

@@ -391,7 +391,8 @@ namespace DotNet.Testcontainers.Tests.Unit.Containers.Unix
         await using (ITestcontainersContainer testcontainer = testcontainersBuilder.Build())
         {
           await testcontainer.StartAsync();
-          Assert.Equal(255, (await testcontainer.ExecAsync(new[] { "/bin/sh", "-c", "exit 255" })).ExitCode);
+          var execResult = await testcontainer.ExecAsync(new[] { "/bin/sh", "-c", "exit 255" });
+          Assert.Equal(255, execResult.ExitCode);
         }
       }
 
@@ -408,8 +409,8 @@ namespace DotNet.Testcontainers.Tests.Unit.Containers.Unix
         await using (ITestcontainersContainer testcontainer = testcontainersBuilder.Build())
         {
           await testcontainer.StartAsync();
-          var output = await testcontainer.ExecAsync(new[] { "/bin/sh", "-c", "ping -c 3 google.com" });
-          Assert.Contains("PING google.com", output.StdOut);
+          var execResult = await testcontainer.ExecAsync(new[] { "/bin/sh", "-c", "ping -c 4 google.com" });
+          Assert.Contains("PING google.com", execResult.Stdout);
         }
       }
 
@@ -426,8 +427,8 @@ namespace DotNet.Testcontainers.Tests.Unit.Containers.Unix
         await using (ITestcontainersContainer testcontainer = testcontainersBuilder.Build())
         {
           await testcontainer.StartAsync();
-          var output = await testcontainer.ExecAsync(new[] { "/bin/sh", "-c", "cd missing_folder" });
-          Assert.Contains("can't cd to missing_folder", output.StdErr);
+          var execResult = await testcontainer.ExecAsync(new[] { "/bin/sh", "-c", "cd missing_directory" });
+          Assert.Contains("can't cd to missing_directory", execResult.Stderr);
         }
       }
 

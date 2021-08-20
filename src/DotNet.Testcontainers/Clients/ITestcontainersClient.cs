@@ -74,7 +74,7 @@ namespace DotNet.Testcontainers.Clients
     Task AttachAsync(string id, IOutputConsumer outputConsumer, CancellationToken ct = default);
 
     /// <summary>
-    /// Executes a command in a container and returns the output generated.
+    /// Executes a command in a container.
     /// </summary>
     /// <param name="id">Docker container id.</param>
     /// <param name="command">Shell command.</param>
